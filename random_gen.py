@@ -10,6 +10,12 @@ import argparse
 import sys
 from typing import List, Optional, Set
 import re
+try:
+    import tkinter as tk
+    from tkinter import ttk, scrolledtext, messagebox
+    GUI_AVAILABLE = True
+except ImportError:
+    GUI_AVAILABLE = False
 
 
 class RandomGenerator:
@@ -312,10 +318,315 @@ class TUI:
             input("\nPress Enter to continue...")
 
 
+class GUI:
+    """Graphical User Interface for the generator"""
+    
+    def __init__(self):
+        if not GUI_AVAILABLE:
+            print("Error: tkinter not available. GUI mode requires tkinter.")
+            sys.exit(1)
+            
+        self.generator = RandomGenerator()
+        self.root = tk.Tk()
+        self.root.title("Random Value Generator")
+        self.root.geometry("800x600")
+        self.root.resizable(True, True)
+        
+        # Configure style
+        style = ttk.Style()
+        style.theme_use('clam')
+        
+        self.setup_ui()
+    
+    def setup_ui(self):
+        """Setup the GUI layout"""
+        # Main container
+        main_frame = ttk.Frame(self.root, padding="10")
+        main_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        
+        # Configure grid weights
+        self.root.columnconfigure(0, weight=1)
+        self.root.rowconfigure(0, weight=1)
+        main_frame.columnconfigure(1, weight=1)
+        
+        # Title
+        title_label = ttk.Label(main_frame, text="Random Value Generator", 
+                               font=('Arial', 16, 'bold'))
+        title_label.grid(row=0, column=0, columnspan=2, pady=(0, 20))
+        
+        # Generation Type
+        ttk.Label(main_frame, text="Generation Type:", font=('Arial', 10, 'bold')).grid(
+            row=1, column=0, sticky=tk.W, pady=5)
+        
+        self.gen_type = tk.StringVar(value="number")
+        gen_types = [
+            ("Numbers", "number"),
+            ("Floats", "float"),
+            ("Colors", "color"),
+            ("Strings", "string"),
+            ("Custom Pattern", "custom"),
+            ("From List", "list")
+        ]
+        
+        type_frame = ttk.Frame(main_frame)
+        type_frame.grid(row=2, column=0, columnspan=2, sticky=tk.W, pady=(0, 10))
+        
+        for i, (text, value) in enumerate(gen_types):
+            ttk.Radiobutton(type_frame, text=text, variable=self.gen_type, 
+                           value=value, command=self.on_type_change).grid(
+                row=0, column=i, padx=5)
+        
+        # Options Frame (will change based on type)
+        self.options_frame = ttk.LabelFrame(main_frame, text="Options", padding="10")
+        self.options_frame.grid(row=3, column=0, columnspan=2, sticky=(tk.W, tk.E), 
+                               pady=10)
+        self.options_frame.columnconfigure(1, weight=1)
+        
+        # Results Frame
+        results_frame = ttk.LabelFrame(main_frame, text="Results", padding="10")
+        results_frame.grid(row=4, column=0, columnspan=2, sticky=(tk.W, tk.E, tk.N, tk.S), 
+                          pady=10)
+        results_frame.columnconfigure(0, weight=1)
+        results_frame.rowconfigure(0, weight=1)
+        main_frame.rowconfigure(4, weight=1)
+        
+        self.results_text = scrolledtext.ScrolledText(results_frame, height=10, 
+                                                      font=('Courier', 10))
+        self.results_text.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        
+        # Buttons Frame
+        buttons_frame = ttk.Frame(main_frame)
+        buttons_frame.grid(row=5, column=0, columnspan=2, pady=10)
+        
+        ttk.Button(buttons_frame, text="Generate", command=self.generate,
+                  style='Accent.TButton').pack(side=tk.LEFT, padx=5)
+        ttk.Button(buttons_frame, text="Clear Results", 
+                  command=self.clear_results).pack(side=tk.LEFT, padx=5)
+        ttk.Button(buttons_frame, text="Copy to Clipboard", 
+                  command=self.copy_to_clipboard).pack(side=tk.LEFT, padx=5)
+        
+        # Initialize with number options
+        self.on_type_change()
+    
+    def clear_options_frame(self):
+        """Clear all widgets from options frame"""
+        for widget in self.options_frame.winfo_children():
+            widget.destroy()
+    
+    def on_type_change(self):
+        """Handle generation type change"""
+        self.clear_options_frame()
+        gen_type = self.gen_type.get()
+        
+        if gen_type == "number":
+            self.setup_number_options()
+        elif gen_type == "float":
+            self.setup_float_options()
+        elif gen_type == "color":
+            self.setup_color_options()
+        elif gen_type == "string":
+            self.setup_string_options()
+        elif gen_type == "custom":
+            self.setup_custom_options()
+        elif gen_type == "list":
+            self.setup_list_options()
+    
+    def setup_number_options(self):
+        """Setup options for number generation"""
+        ttk.Label(self.options_frame, text="Min:").grid(row=0, column=0, sticky=tk.W, pady=5)
+        self.num_min = ttk.Entry(self.options_frame, width=15)
+        self.num_min.insert(0, "1")
+        self.num_min.grid(row=0, column=1, sticky=tk.W, padx=5, pady=5)
+        
+        ttk.Label(self.options_frame, text="Max:").grid(row=1, column=0, sticky=tk.W, pady=5)
+        self.num_max = ttk.Entry(self.options_frame, width=15)
+        self.num_max.insert(0, "100")
+        self.num_max.grid(row=1, column=1, sticky=tk.W, padx=5, pady=5)
+        
+        ttk.Label(self.options_frame, text="Count:").grid(row=2, column=0, sticky=tk.W, pady=5)
+        self.num_count = ttk.Entry(self.options_frame, width=15)
+        self.num_count.insert(0, "5")
+        self.num_count.grid(row=2, column=1, sticky=tk.W, padx=5, pady=5)
+        
+        ttk.Label(self.options_frame, text="Exclude (comma-separated):").grid(
+            row=3, column=0, sticky=tk.W, pady=5)
+        self.num_exclude = ttk.Entry(self.options_frame, width=30)
+        self.num_exclude.grid(row=3, column=1, sticky=(tk.W, tk.E), padx=5, pady=5)
+    
+    def setup_float_options(self):
+        """Setup options for float generation"""
+        ttk.Label(self.options_frame, text="Min:").grid(row=0, column=0, sticky=tk.W, pady=5)
+        self.float_min = ttk.Entry(self.options_frame, width=15)
+        self.float_min.insert(0, "0.0")
+        self.float_min.grid(row=0, column=1, sticky=tk.W, padx=5, pady=5)
+        
+        ttk.Label(self.options_frame, text="Max:").grid(row=1, column=0, sticky=tk.W, pady=5)
+        self.float_max = ttk.Entry(self.options_frame, width=15)
+        self.float_max.insert(0, "1.0")
+        self.float_max.grid(row=1, column=1, sticky=tk.W, padx=5, pady=5)
+        
+        ttk.Label(self.options_frame, text="Decimals:").grid(row=2, column=0, sticky=tk.W, pady=5)
+        self.float_decimals = ttk.Entry(self.options_frame, width=15)
+        self.float_decimals.insert(0, "2")
+        self.float_decimals.grid(row=2, column=1, sticky=tk.W, padx=5, pady=5)
+        
+        ttk.Label(self.options_frame, text="Count:").grid(row=3, column=0, sticky=tk.W, pady=5)
+        self.float_count = ttk.Entry(self.options_frame, width=15)
+        self.float_count.insert(0, "5")
+        self.float_count.grid(row=3, column=1, sticky=tk.W, padx=5, pady=5)
+    
+    def setup_color_options(self):
+        """Setup options for color generation"""
+        ttk.Label(self.options_frame, text="Format:").grid(row=0, column=0, sticky=tk.W, pady=5)
+        self.color_format = ttk.Combobox(self.options_frame, values=["hex", "rgb", "hsl"], 
+                                         width=13, state="readonly")
+        self.color_format.set("hex")
+        self.color_format.grid(row=0, column=1, sticky=tk.W, padx=5, pady=5)
+        
+        ttk.Label(self.options_frame, text="Count:").grid(row=1, column=0, sticky=tk.W, pady=5)
+        self.color_count = ttk.Entry(self.options_frame, width=15)
+        self.color_count.insert(0, "5")
+        self.color_count.grid(row=1, column=1, sticky=tk.W, padx=5, pady=5)
+    
+    def setup_string_options(self):
+        """Setup options for string generation"""
+        ttk.Label(self.options_frame, text="Length:").grid(row=0, column=0, sticky=tk.W, pady=5)
+        self.str_length = ttk.Entry(self.options_frame, width=15)
+        self.str_length.insert(0, "10")
+        self.str_length.grid(row=0, column=1, sticky=tk.W, padx=5, pady=5)
+        
+        ttk.Label(self.options_frame, text="Pattern:").grid(row=1, column=0, sticky=tk.W, pady=5)
+        patterns = ["alphanumeric", "alpha", "numeric", "lowercase", "uppercase", 
+                   "hex", "symbols", "alphanumeric_symbols"]
+        self.str_pattern = ttk.Combobox(self.options_frame, values=patterns, 
+                                        width=20, state="readonly")
+        self.str_pattern.set("alphanumeric")
+        self.str_pattern.grid(row=1, column=1, sticky=tk.W, padx=5, pady=5)
+        
+        ttk.Label(self.options_frame, text="Exclude chars:").grid(
+            row=2, column=0, sticky=tk.W, pady=5)
+        self.str_exclude = ttk.Entry(self.options_frame, width=30)
+        self.str_exclude.grid(row=2, column=1, sticky=(tk.W, tk.E), padx=5, pady=5)
+        
+        ttk.Label(self.options_frame, text="Count:").grid(row=3, column=0, sticky=tk.W, pady=5)
+        self.str_count = ttk.Entry(self.options_frame, width=15)
+        self.str_count.insert(0, "5")
+        self.str_count.grid(row=3, column=1, sticky=tk.W, padx=5, pady=5)
+    
+    def setup_custom_options(self):
+        """Setup options for custom pattern generation"""
+        ttk.Label(self.options_frame, text="Template:").grid(row=0, column=0, sticky=tk.W, pady=5)
+        self.custom_template = ttk.Entry(self.options_frame, width=40)
+        self.custom_template.insert(0, "{u}{u}{u}-{d}{d}{d}")
+        self.custom_template.grid(row=0, column=1, sticky=(tk.W, tk.E), padx=5, pady=5)
+        
+        ttk.Label(self.options_frame, text="Count:").grid(row=1, column=0, sticky=tk.W, pady=5)
+        self.custom_count = ttk.Entry(self.options_frame, width=15)
+        self.custom_count.insert(0, "5")
+        self.custom_count.grid(row=1, column=1, sticky=tk.W, padx=5, pady=5)
+        
+        # Help text
+        help_text = ttk.Label(self.options_frame, 
+                             text="{d}=digit {l}=lowercase {u}=uppercase {a}=letter {x}=hex {s}=symbol",
+                             font=('Arial', 8), foreground='gray')
+        help_text.grid(row=2, column=0, columnspan=2, sticky=tk.W, pady=5)
+    
+    def setup_list_options(self):
+        """Setup options for list-based generation"""
+        ttk.Label(self.options_frame, text="Items (comma-separated):").grid(
+            row=0, column=0, sticky=tk.W, pady=5)
+        self.list_items = ttk.Entry(self.options_frame, width=40)
+        self.list_items.insert(0, "red,blue,green,yellow,purple")
+        self.list_items.grid(row=0, column=1, sticky=(tk.W, tk.E), padx=5, pady=5)
+        
+        ttk.Label(self.options_frame, text="Count:").grid(row=1, column=0, sticky=tk.W, pady=5)
+        self.list_count = ttk.Entry(self.options_frame, width=15)
+        self.list_count.insert(0, "3")
+        self.list_count.grid(row=1, column=1, sticky=tk.W, padx=5, pady=5)
+        
+        self.list_unique = tk.BooleanVar()
+        ttk.Checkbutton(self.options_frame, text="Unique items only", 
+                       variable=self.list_unique).grid(row=2, column=0, columnspan=2, 
+                                                       sticky=tk.W, pady=5)
+    
+    def generate(self):
+        """Generate values based on current settings"""
+        try:
+            gen_type = self.gen_type.get()
+            results = []
+            
+            if gen_type == "number":
+                min_val = int(self.num_min.get())
+                max_val = int(self.num_max.get())
+                count = int(self.num_count.get())
+                exclude_str = self.num_exclude.get().strip()
+                exclude = set()
+                if exclude_str:
+                    exclude = {int(x.strip()) for x in exclude_str.split(',')}
+                results = self.generator.generate_number(min_val, max_val, exclude, count)
+            
+            elif gen_type == "float":
+                min_val = float(self.float_min.get())
+                max_val = float(self.float_max.get())
+                decimals = int(self.float_decimals.get())
+                count = int(self.float_count.get())
+                results = self.generator.generate_float(min_val, max_val, decimals, count)
+            
+            elif gen_type == "color":
+                format_type = self.color_format.get()
+                count = int(self.color_count.get())
+                results = self.generator.generate_color(format_type, count)
+            
+            elif gen_type == "string":
+                length = int(self.str_length.get())
+                pattern = self.str_pattern.get()
+                exclude_chars = self.str_exclude.get()
+                count = int(self.str_count.get())
+                results = self.generator.generate_string(length, pattern, exclude_chars, count)
+            
+            elif gen_type == "custom":
+                template = self.custom_template.get()
+                count = int(self.custom_count.get())
+                results = self.generator.generate_custom(template, count)
+            
+            elif gen_type == "list":
+                items_str = self.list_items.get()
+                items = [x.strip() for x in items_str.split(',')]
+                count = int(self.list_count.get())
+                unique = self.list_unique.get()
+                results = self.generator.generate_from_list(items, count, unique)
+            
+            # Display results
+            self.results_text.delete(1.0, tk.END)
+            for result in results:
+                self.results_text.insert(tk.END, f"{result}\n")
+            
+        except Exception as e:
+            messagebox.showerror("Error", f"Generation failed: {str(e)}")
+    
+    def clear_results(self):
+        """Clear the results text area"""
+        self.results_text.delete(1.0, tk.END)
+    
+    def copy_to_clipboard(self):
+        """Copy results to clipboard"""
+        results = self.results_text.get(1.0, tk.END).strip()
+        if results:
+            self.root.clipboard_clear()
+            self.root.clipboard_append(results)
+            messagebox.showinfo("Success", "Results copied to clipboard!")
+        else:
+            messagebox.showwarning("Warning", "No results to copy!")
+    
+    def run(self):
+        """Start the GUI"""
+        self.root.mainloop()
+
+
 def main():
     """Main entry point"""
     parser = argparse.ArgumentParser(description='Advanced Random Value Generator')
-    parser.add_argument('--mode', choices=['tui', 'number', 'float', 'color', 'string', 'custom', 'list'],
+    parser.add_argument('--mode', choices=['tui', 'gui', 'number', 'float', 'color', 'string', 'custom', 'list'],
                        help='Generation mode')
     
     # Number options
@@ -349,6 +660,12 @@ def main():
     args = parser.parse_args()
     
     generator = RandomGenerator()
+    
+    # GUI mode
+    if args.mode == 'gui':
+        gui = GUI()
+        gui.run()
+        return
     
     # If no mode specified, start TUI
     if not args.mode or args.mode == 'tui':
