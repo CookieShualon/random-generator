@@ -1,16 +1,17 @@
 # Random Value Generator
 
-A powerful and flexible Python script for generating random values with extensive customization options. Generate numbers, colors, strings, or custom patterns through an interactive TUI or command-line interface.
+A powerful and flexible Python script for generating random values with extensive customization options. Generate numbers, colors, strings, or custom patterns through an interactive TUI, graphical GUI, or command-line interface.
 
 ## Features
 
 - 🎲 **Multiple Generation Types**: Numbers, floats, colors, strings, custom patterns, and list selection
-- 🖥️ **Dual Interface**: Interactive TUI or direct command-line usage
+- 🖥️ **Triple Interface**: Graphical GUI, interactive TUI, or direct command-line usage
 - 🚫 **Exclusion Support**: Exclude specific values or characters
 - 🎨 **Color Formats**: HEX, RGB, and HSL color generation
 - 📝 **Custom Templates**: Create your own patterns with template syntax
 - 🔢 **Range Control**: Full control over min/max values and counts
 - ✨ **Pattern Presets**: Built-in patterns for common use cases
+- 📋 **Copy to Clipboard**: Easy copying of results (GUI mode)
 
 ## Installation
 
@@ -18,6 +19,19 @@ A powerful and flexible Python script for generating random values with extensiv
 
 - Python 3.6 or higher
 - No external dependencies required (uses only standard library)
+- **For GUI mode**: tkinter (usually pre-installed with Python)
+  - **Linux users**: May need to install separately:
+    ```bash
+    # Debian/Ubuntu
+    sudo apt-get install python3-tk
+    
+    # Fedora
+    sudo dnf install python3-tkinter
+    
+    # Arch Linux
+    sudo pacman -S tk
+    ```
+  - **Windows/Mac**: tkinter is included by default with Python
 
 ### Setup
 
@@ -39,6 +53,28 @@ python3 random_gen.py
 
 ## Usage
 
+### GUI Mode (Graphical Interface)
+
+Launch the graphical user interface for an intuitive point-and-click experience:
+
+```bash
+python3 random_gen.py --mode gui
+```
+
+**GUI Features:**
+- 🎯 **Easy Selection**: Radio buttons for generation types
+- 📊 **Visual Results**: Scrollable results area
+- 📋 **One-Click Copy**: Copy all results to clipboard
+- 🧹 **Quick Clear**: Clear results with a button
+- 🎨 **Dynamic Forms**: Options change based on selection
+- 💡 **Built-in Help**: Template syntax hints
+
+**Perfect for:**
+- Quick generation tasks
+- Testing different parameters
+- Users who prefer graphical interfaces
+- Visual preview of results
+
 ### Interactive TUI Mode
 
 Launch the interactive menu by running without arguments:
@@ -55,9 +91,20 @@ python3 random_gen.py --mode tui
 
 The TUI provides a user-friendly menu to guide you through all generation options.
 
+**Perfect for:**
+- Terminal-only environments
+- Quick interactive sessions
+- Learning the tool's capabilities
+
 ### Command-Line Mode
 
 Generate values directly from the command line for scripting and automation.
+
+**Perfect for:**
+- Automation and scripting
+- CI/CD pipelines
+- Batch processing
+- Integration with other tools
 
 #### Generate Numbers
 
@@ -211,7 +258,7 @@ green
 
 | Argument | Type | Default | Description |
 |----------|------|---------|-------------|
-| `--mode` | choice | `tui` | Generation mode: `tui`, `number`, `float`, `color`, `string`, `custom`, `list` |
+| `--mode` | choice | `tui` | Generation mode: `gui`, `tui`, `number`, `float`, `color`, `string`, `custom`, `list` |
 | `--count` | int | `1` | Number of values to generate |
 
 ### Number Mode Arguments
@@ -258,6 +305,19 @@ green
 | `--unique` | flag | `false` | Select unique items only (no duplicates) |
 
 ## Practical Examples
+
+### GUI Mode Examples
+
+```bash
+# Launch GUI for visual generation
+python3 random_gen.py --mode gui
+
+# Then use the interface to:
+# 1. Select generation type (radio buttons)
+# 2. Configure options in the form
+# 3. Click "Generate"
+# 4. Copy results with "Copy to Clipboard"
+```
 
 ### Web Development
 
@@ -307,6 +367,15 @@ python3 random_gen.py --mode custom --template "{x}{x}:{x}{x}:{x}{x}:{x}{x}:{x}{
 
 ## Use in Scripts
 
+### GUI Mode in Scripts
+
+```python
+import subprocess
+
+# Launch GUI for user to generate values
+subprocess.run(['python3', 'random_gen.py', '--mode', 'gui'])
+```
+
 ### Bash Script Example
 
 ```bash
@@ -336,6 +405,26 @@ color = get_random_color()
 print(f"Random color: {color}")
 ```
 
+## Screenshots
+
+### GUI Mode
+The graphical interface provides an intuitive way to generate random values with visual feedback:
+
+- **Generation Type Selection**: Radio buttons for easy switching
+- **Dynamic Options**: Form fields adapt to selected type
+- **Results Display**: Scrollable text area with all generated values
+- **Action Buttons**: Generate, Clear, and Copy to Clipboard
+
+### TUI Mode
+Text-based interactive menu for terminal environments:
+
+- **Menu-Driven**: Numbered options for each generation type
+- **Guided Input**: Prompts for all parameters
+- **Immediate Results**: Display results after generation
+
+### CLI Mode
+Direct command-line usage for automation and scripting.
+
 ## Error Handling
 
 The script provides clear error messages:
@@ -352,21 +441,27 @@ python3 random_gen.py --mode color --format invalid
 
 ## Tips & Best Practices
 
-1. **Avoiding Confusing Characters**: When generating passwords or codes, exclude similar-looking characters:
+1. **GUI Mode for Quick Tasks**: Use `--mode gui` when you need to experiment with different parameters visually
+
+2. **Avoiding Confusing Characters**: When generating passwords or codes, exclude similar-looking characters:
    ```bash
    --exclude-chars "0oO1lI"
    ```
 
-2. **Unique Random Selection**: Use `--unique` flag when you need distinct items from a list
+2. **TUI for Terminal Work**: Use TUI mode when working in SSH sessions or terminal-only environments
 
-3. **Reproducible Results**: For testing, you can seed Python's random before running
+3. **CLI for Automation**: Use command-line mode in scripts and automated workflows
 
-4. **Piping Output**: Combine with other tools:
+4. **Unique Random Selection**: Use `--unique` flag when you need distinct items from a list
+
+5. **Reproducible Results**: For testing, you can seed Python's random before running
+
+6. **Piping Output**: Combine with other tools:
    ```bash
    python3 random_gen.py --mode number --count 100 | sort -n | uniq
    ```
 
-5. **Batch Generation**: Generate large datasets efficiently:
+7. **Batch Generation**: Generate large datasets efficiently:
    ```bash
    python3 random_gen.py --mode float --count 10000 > data.txt
    ```
@@ -384,6 +479,12 @@ Contributions are welcome! Feel free to submit issues or pull requests.
 Created as a flexible tool for developers, testers, and anyone needing random value generation.
 
 ## Changelog
+
+### Version 1.1
+- ✨ Added GUI mode with tkinter
+- 📋 Copy to clipboard functionality
+- 🎨 Visual interface with dynamic forms
+- 💡 Built-in help text for templates
 
 ### Version 1.0
 - Initial release
