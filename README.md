@@ -21,9 +21,10 @@ A powerful and flexible Python script for generating random values with extensiv
 
 ### Setup
 
-1. Download the script:
+1. Clone the repository:
 ```bash
-wget https://raw.githubusercontent.com/CookieShualon/random-generator/main/random_gen.py
+git clone https://github.com/CookieShualon/random-generator.git
+cd random-generator
 ```
 
 2. Make it executable (Linux/Mac):
