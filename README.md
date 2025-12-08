@@ -6,6 +6,7 @@ A powerful and flexible Python script for generating random values with extensiv
 
 - 🎲 **Multiple Generation Types**: Numbers, floats, colors, strings, custom patterns, and list selection
 - 🖥️ **Triple Interface**: Graphical GUI, interactive TUI, or direct command-line usage
+- 🎡 **Wheel of Fortune**: Interactive spinning wheel for fun random selections
 - 🚫 **Exclusion Support**: Exclude specific values or characters
 - 🎨 **Color Formats**: HEX, RGB, and HSL color generation
 - 📝 **Custom Templates**: Create your own patterns with template syntax
@@ -63,6 +64,7 @@ python3 random_gen.py --mode gui
 
 **GUI Features:**
 - 🎯 **Easy Selection**: Radio buttons for generation types
+- 🎡 **Wheel of Fortune**: Interactive spinning wheel with custom items
 - 📊 **Visual Results**: Scrollable results area
 - 📋 **One-Click Copy**: Copy all results to clipboard
 - 🧹 **Quick Clear**: Clear results with a button
@@ -74,6 +76,7 @@ python3 random_gen.py --mode gui
 - Testing different parameters
 - Users who prefer graphical interfaces
 - Visual preview of results
+- Fun interactive selections with the wheel
 
 ### Interactive TUI Mode
 
@@ -317,6 +320,41 @@ python3 random_gen.py --mode gui
 # 2. Configure options in the form
 # 3. Click "Generate"
 # 4. Copy results with "Copy to Clipboard"
+
+# OR use the Wheel of Fortune:
+# 1. Click "🎡 Wheel of Fortune" tab
+# 2. Enter your items (one per line)
+# 3. Click "Update Items"
+# 4. Click "🎲 Spin the Wheel!" or click center button
+# 5. Watch it spin and see the winner!
+```
+
+### Wheel of Fortune Examples
+
+**Restaurant Picker:**
+```
+Pizza Place
+Sushi Bar
+Mexican Grill
+Italian Bistro
+Burger Joint
+Thai Kitchen
+```
+
+**Team Selection:**
+```
+Team Red
+Team Blue
+Team Green
+Team Yellow
+```
+
+**Raffle/Giveaway:**
+```
+Participant 1
+Participant 2
+Participant 3
+[... add up to 20 participants]
 ```
 
 ### Web Development
@@ -410,10 +448,19 @@ print(f"Random color: {color}")
 ### GUI Mode
 The graphical interface provides an intuitive way to generate random values with visual feedback:
 
+**Generator Tab:**
 - **Generation Type Selection**: Radio buttons for easy switching
 - **Dynamic Options**: Form fields adapt to selected type
 - **Results Display**: Scrollable text area with all generated values
 - **Action Buttons**: Generate, Clear, and Copy to Clipboard
+
+**Wheel of Fortune Tab:** 🎡
+- **Colorful Spinning Wheel**: Visual wheel with up to 20 segments
+- **Custom Items Input**: Text area to add your own options
+- **Interactive Center Button**: Click "SPIN" to start spinning
+- **Smooth Animation**: Physics-based rotation with realistic deceleration
+- **Winner Display**: Flash animation and clear result announcement
+- **Perfect for**: Decision making, raffles, games, and fun selections
 
 ### TUI Mode
 Text-based interactive menu for terminal environments:
@@ -443,7 +490,9 @@ python3 random_gen.py --mode color --format invalid
 
 1. **GUI Mode for Quick Tasks**: Use `--mode gui` when you need to experiment with different parameters visually
 
-2. **Avoiding Confusing Characters**: When generating passwords or codes, exclude similar-looking characters:
+2. **Wheel of Fortune for Fun Decisions**: Use the spinning wheel for interactive decision-making, team games, or raffles
+
+3. **Avoiding Confusing Characters**: When generating passwords or codes, exclude similar-looking characters:
    ```bash
    --exclude-chars "0oO1lI"
    ```
@@ -461,7 +510,7 @@ python3 random_gen.py --mode color --format invalid
    python3 random_gen.py --mode number --count 100 | sort -n | uniq
    ```
 
-7. **Batch Generation**: Generate large datasets efficiently:
+8. **Batch Generation**: Generate large datasets efficiently:
    ```bash
    python3 random_gen.py --mode float --count 10000 > data.txt
    ```
@@ -479,6 +528,17 @@ Contributions are welcome! Feel free to submit issues or pull requests.
 Created as a flexible tool for developers, testers, and anyone needing random value generation.
 
 ## Changelog
+
+### Version 1.2
+- 🎡 **Added Wheel of Fortune** - Interactive spinning wheel in GUI mode
+- 🎨 20 vibrant colors for wheel segments
+- 🖱️ Clickable center SPIN button
+- ⚙️ Customizable with 2-20 items
+- ✨ Smooth physics-based animation
+- 🎯 Accurate pointer-based winner selection
+- 🎊 Flash animation for results
+- 📐 Increased window size to 900x700
+- 🗂️ Added tabbed interface (Generator + Wheel)
 
 ### Version 1.1
 - ✨ Added GUI mode with tkinter
