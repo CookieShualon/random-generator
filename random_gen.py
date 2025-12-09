@@ -343,6 +343,7 @@ class GUI:
         self.wheel_spinning = False
         self.wheel_speed = 0
         self.selected_item = None
+        self.wheel_segments = []  # Store segment positions for winner detection
 
         self.setup_ui()
 
@@ -541,10 +542,25 @@ class GUI:
         num_items = len(self.wheel_items)
         angle_per_item = 360 / num_items
 
+        # Store segments for winner calculation
+        self.wheel_segments = []
+
         for i, item in enumerate(self.wheel_items):
-            # Calculate angle - start from top (90 degrees) and go clockwise
-            start_angle = 90 - self.wheel_angle - (i * angle_per_item)
+            # Start angle for this segment
+            # We want segment 0 centered at top (90 degrees)
+            # So segment 0 starts at: 90 - (angle_per_item/2)
+            # And rotates by wheel_angle
+            start_angle = 90 - (angle_per_item / 2) - (i * angle_per_item) + self.wheel_angle
+
             color = colors[i % len(colors)]
+
+            # Store segment info for winner detection
+            self.wheel_segments.append({
+                'item': item,
+                'start': start_angle % 360,
+                'end': (start_angle + angle_per_item) % 360,
+                'index': i
+            })
 
             # Draw segment
             canvas.create_arc(
@@ -654,8 +670,8 @@ class GUI:
     def animate_wheel(self):
         """Animate the spinning wheel"""
         if self.wheel_speed > 0.2:
-            # Update angle
-            self.wheel_angle = (self.wheel_angle + self.wheel_speed) % 360
+            # Update angle (rotate clockwise)
+            self.wheel_angle = (self.wheel_angle - self.wheel_speed) % 360
 
             # Decrease speed (friction)
             self.wheel_speed *= 0.97
@@ -670,31 +686,29 @@ class GUI:
             self.wheel_spinning = False
             self.wheel_speed = 0
 
-            # Calculate which segment is at the pointer
-            num_items = len(self.wheel_items)
-            angle_per_item = 360 / num_items
+            # Find which segment the pointer (at 90 degrees) is pointing to
+            pointer_angle = 90
 
-            # The pointer is at the top (90 degrees)
-            # We need to find which segment is under the pointer
-            # Segments start at 90 degrees and go clockwise
+            winner_item = None
+            for segment in self.wheel_segments:
+                start = segment['start']
+                end = segment['end']
 
-            # Current angle of first segment start
-            first_segment_start = 90 - self.wheel_angle
+                # Handle wrap-around (when segment crosses 0 degrees)
+                if start > end:
+                    if pointer_angle >= start or pointer_angle <= end:
+                        winner_item = segment['item']
+                        break
+                else:
+                    if start <= pointer_angle <= end:
+                        winner_item = segment['item']
+                        break
 
-            # Normalize to 0-360
-            normalized = first_segment_start % 360
+            # Fallback if something went wrong
+            if winner_item is None:
+                winner_item = self.wheel_items[0]
 
-            # The pointer points at 90 degrees (top)
-            # Calculate which segment that falls into
-            # Since segments go clockwise from top, we need to find which one contains 90 degrees
-
-            # Calculate offset from first segment
-            offset_from_first = (90 - first_segment_start) % 360
-
-            # Which segment is this?
-            selected_index = int(offset_from_first / angle_per_item) % num_items
-
-            self.selected_item = self.wheel_items[selected_index]
+            self.selected_item = winner_item
             self.wheel_result_label.config(
                 text=f"🎉 Winner: {self.selected_item}",
                 foreground='#27AE60'
