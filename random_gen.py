@@ -18,6 +18,13 @@ try:
 except ImportError:
     GUI_AVAILABLE = False
 
+# Try to import Textual for enhanced TUI
+try:
+    from textual_tui.app import run_textual_tui
+    TEXTUAL_AVAILABLE = True
+except ImportError:
+    TEXTUAL_AVAILABLE = False
+
 
 class RandomGenerator:
     """Generate various types of random values"""
@@ -988,8 +995,15 @@ def main():
 
     # If no mode specified, start TUI
     if not args.mode or args.mode == 'tui':
-        tui = TUI()
-        tui.run()
+        if TEXTUAL_AVAILABLE:
+            # Use enhanced Textual TUI
+            run_textual_tui(generator)
+        else:
+            # Fall back to classic TUI
+            print("Note: Enhanced TUI mode available with 'pip install textual'")
+            print("      Using classic TUI mode\n")
+            tui = TUI()
+            tui.run()
         return
 
     # Command-line mode
