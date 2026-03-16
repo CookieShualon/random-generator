@@ -19,7 +19,14 @@ A powerful and flexible Python script for generating random values with extensiv
 ### Requirements
 
 - Python 3.6 or higher
-- No external dependencies required (uses only standard library)
+- **For Enhanced TUI mode** (recommended): Install dependencies
+  ```bash
+  pip install -r requirements.txt
+  ```
+  This installs:
+  - `textual>=0.50.0` - Modern TUI framework
+  - `pyperclip>=1.8.2` - Clipboard support (optional)
+  
 - **For GUI mode**: tkinter (usually pre-installed with Python)
   - **Linux users**: May need to install separately:
     ```bash
@@ -33,6 +40,8 @@ A powerful and flexible Python script for generating random values with extensiv
     sudo pacman -S tk
     ```
   - **Windows/Mac**: tkinter is included by default with Python
+
+- **For Classic TUI mode**: No external dependencies required (uses only standard library)
 
 ### Setup
 
@@ -78,12 +87,18 @@ python3 random_gen.py --mode gui
 - Visual preview of results
 - Fun interactive selections with the wheel
 
-### Interactive TUI Mode
+### Enhanced TUI Mode (Recommended)
 
-Launch the interactive menu by running without arguments:
+Launch the modern, feature-rich TUI interface:
 
 ```bash
 python3 random_gen.py
+```
+
+or use the convenience script:
+
+```bash
+./run_enhanced_tui.sh
 ```
 
 or explicitly:
@@ -92,12 +107,31 @@ or explicitly:
 python3 random_gen.py --mode tui
 ```
 
-The TUI provides a user-friendly menu to guide you through all generation options.
+**Enhanced TUI Features:**
+- 🎨 **Modern Interface**: Cyan/blue theme with responsive layout
+- ⌨️ **Full Keyboard Navigation**: F1-F6 for quick access, Ctrl+H for help, Ctrl+Q to quit
+- 🖱️ **Mouse Support**: Click buttons and navigate with mouse
+- 📋 **Copy to Clipboard**: One-click copy of results
+- 📜 **Generation History**: Automatic tracking of all generations
+- ✅ **Input Validation**: Real-time validation with clear error messages
+- 📊 **Formatted Results**: Comma-separated, easy-to-read output
+- 🌈 **Color Swatches**: Visual preview for color generation
+
+**Available Generators:**
+- **Numbers** (F1): Generate random integers with exclusions
+- **Floats** (F2): Generate floating point numbers with decimal precision
+- **Colors** (F3): Generate colors in HEX, RGB, or HSL formats
+- **Strings** (F4): Generate strings with 8 pattern options
+- **Custom** (F5): Template-based generation with placeholders
+- **List** (F6): Random selection from your own list
 
 **Perfect for:**
 - Terminal-only environments
-- Quick interactive sessions
+- Power users who prefer keyboard navigation
+- Quick interactive sessions with visual feedback
 - Learning the tool's capabilities
+
+**Note**: If Textual is not installed, the app automatically falls back to the classic TUI mode.
 
 ### Command-Line Mode
 
