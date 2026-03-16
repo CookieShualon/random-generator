@@ -57,9 +57,9 @@ class ListGeneratorScreen(Container):
     }
     
     ListGeneratorScreen #items-textarea {
-        height: 15;
-        min-height: 15;
-        max-height: 15;
+        height: 10;
+        min-height: 10;
+        max-height: 10;
         margin-bottom: 2;
     }
     """
@@ -82,9 +82,9 @@ class ListGeneratorScreen(Container):
             yield Static("Items (one per line):", classes="form-label")
             textarea = TextArea(id="items-textarea")
             textarea.show_vertical_scrollbar = True
-            textarea.styles.height = 15
-            textarea.styles.min_height = 15
-            textarea.styles.max_height = 15
+            textarea.styles.height = 10
+            textarea.styles.min_height = 10
+            textarea.styles.max_height = 10
             yield textarea
             yield Static("Enter items, one per line", classes="input-hint")
             yield Static("", id="items-error", classes="error-message")
