@@ -563,6 +563,28 @@ Created as a flexible tool for developers, testers, and anyone needing random va
 
 ## Changelog
 
+### Version 2.0
+- 🚀 **Enhanced TUI Mode** - Complete rewrite with Textual framework
+- 🎨 **Modern Interface**: Cyan/blue theme with responsive layout
+- ⌨️ **Full Keyboard Navigation**: F1-F6 shortcuts, Ctrl+H help, Ctrl+Q quit
+- 🖱️ **Mouse Support**: Click buttons and navigate with mouse
+- 📋 **Copy to Clipboard**: One-click copy in TUI mode
+- 📜 **Generation History**: Automatic tracking of all generations
+- ✅ **Input Validation**: Clear error messages and validation
+- 📊 **Formatted Results**: Comma-separated output
+- 🌈 **Color Swatches**: Visual preview for colors
+- 🎯 **All Generators Implemented**:
+  - Numbers Generator with exclusions
+  - Floats Generator with decimal precision
+  - Colors Generator (HEX/RGB/HSL)
+  - Strings Generator with 8 patterns
+  - Custom Pattern Generator with templates
+  - List Selection with scrollable textarea
+- 🏠 **Home Screen**: Quick action cards and recent history
+- ❓ **Help Screen**: Complete documentation and shortcuts
+- 🔄 **Auto-fallback**: Falls back to classic TUI if Textual not installed
+- 📦 **Dependencies**: Added requirements.txt for easy installation
+
 ### Version 1.2
 - 🎡 **Added Wheel of Fortune** - Interactive spinning wheel in GUI mode
 - 🎨 20 vibrant colors for wheel segments
