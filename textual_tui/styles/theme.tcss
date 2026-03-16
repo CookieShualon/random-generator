@@ -89,8 +89,9 @@ Input {
     background: $surface-darken-1;
     color: $text;
     margin-bottom: 1;
-    height: 3;
+    height: 4;
     width: 100%;
+    padding: 0 1;
 }
 
 Input:focus {
