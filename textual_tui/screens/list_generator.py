@@ -15,6 +15,7 @@ class ListGeneratorScreen(Container):
     ListGeneratorScreen {
         padding: 2 4;
         height: 100%;
+        overflow-y: auto;
     }
     
     ListGeneratorScreen .screen-title {
