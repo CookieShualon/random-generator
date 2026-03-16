@@ -15,6 +15,7 @@ class FloatGeneratorScreen(Container):
     FloatGeneratorScreen {
         padding: 2 4;
         height: 100%;
+        overflow-y: auto;
     }
     
     FloatGeneratorScreen .screen-title {

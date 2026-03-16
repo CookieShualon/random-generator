@@ -15,6 +15,7 @@ class CustomGeneratorScreen(Container):
     CustomGeneratorScreen {
         padding: 2 4;
         height: 100%;
+        overflow-y: auto;
     }
     
     CustomGeneratorScreen .screen-title {

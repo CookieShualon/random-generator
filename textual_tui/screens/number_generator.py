@@ -16,6 +16,7 @@ class NumberGeneratorScreen(Container):
     NumberGeneratorScreen {
         padding: 2 4;
         height: 100%;
+        overflow-y: auto;
     }
     
     NumberGeneratorScreen .screen-title {
