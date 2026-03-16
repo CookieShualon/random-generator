@@ -85,7 +85,7 @@ Footer {
 }
 
 Input {
-    border: tall $primary;
+    border: solid $primary;
     background: $surface-darken-1;
     color: $text;
     margin-bottom: 1;
@@ -94,7 +94,7 @@ Input {
 }
 
 Input:focus {
-    border: tall $accent;
+    border: solid $accent;
 }
 
 Input.-error {
