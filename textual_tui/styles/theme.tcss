@@ -101,6 +101,7 @@ Footer {
 Input {
     background: $surface-darken-1;
     color: $text;
+    border: tall $primary-darken-1;
     margin-bottom: 1;
     max-width: 64;
 }
