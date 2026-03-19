@@ -177,4 +177,4 @@ class HelpScreen(Container):
         """Handle button press."""
         if event.button.id == "close-btn":
             # Navigate back to home
-            pass
+            self.app.action_show_screen("home")

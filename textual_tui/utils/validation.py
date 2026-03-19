@@ -201,7 +201,9 @@ def validate_number_generation(min_val: int, max_val: int, exclude: Set[int], co
     Returns:
         Tuple of (is_valid, error_message)
     """
-    available = len([x for x in range(min_val, max_val + 1) if x not in exclude])
+    total_range = max_val - min_val + 1
+    excluded_in_range = sum(1 for x in exclude if min_val <= x <= max_val)
+    available = total_range - excluded_in_range
     
     if available < count:
         return False, f"Not enough numbers available. Need {count}, have {available}"

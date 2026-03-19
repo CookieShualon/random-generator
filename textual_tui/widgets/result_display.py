@@ -63,7 +63,7 @@ class ResultDisplay(Container):
         with Horizontal(classes="button-group"):
             yield Button("📋 Copy", id="copy-btn", variant="primary")
             yield Button("💾 Export", id="export-btn")
-            yield Button("🗑️  Clear", id="clear-btn", variant="default")
+            yield Button("🗑️  Clear", id="results-clear-btn", variant="default")
     
     def on_button_pressed(self, event: Button.Pressed) -> None:
         """Handle button press."""
@@ -71,7 +71,7 @@ class ResultDisplay(Container):
             self.post_message(self.CopyRequested())
         elif event.button.id == "export-btn":
             self.post_message(self.ExportRequested())
-        elif event.button.id == "clear-btn":
+        elif event.button.id == "results-clear-btn":
             self.clear_results()
     
     def set_results(self, results: List[str], result_type: Optional[str] = None) -> None:
