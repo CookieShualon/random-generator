@@ -85,16 +85,18 @@ Footer {
 }
 
 Input {
-    border: solid $primary;
+    border: tall $primary;
     background: $surface-darken-1;
     color: $text;
     margin-bottom: 1;
-    height: 3;
+    height: auto;
+    min-height: 1;
     width: 100%;
+    max-width: 64;
 }
 
 Input:focus {
-    border: solid $accent;
+    border: tall $accent;
 }
 
 Input.-error {
@@ -108,6 +110,7 @@ TextArea {
     color: $text;
     margin-bottom: 1;
     width: 100%;
+    max-width: 64;
     min-height: 8;
 }
 
