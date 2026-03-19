@@ -85,13 +85,9 @@ Footer {
 }
 
 Input {
-    border: tall $primary;
     background: $surface-darken-1;
     color: $text;
     margin-bottom: 1;
-    height: auto;
-    min-height: 1;
-    width: 100%;
     max-width: 64;
 }
 
