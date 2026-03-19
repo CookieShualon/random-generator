@@ -28,11 +28,19 @@ Footer {
 
 /* Navigation Sidebar */
 #navigation {
-    width: 20;
+    width: 22;
+    min-width: 16;
     dock: left;
     background: $panel;
     border-right: tall $primary;
     padding: 1;
+    overflow-y: auto;
+}
+
+/* Collapse nav on very small terminals */
+.narrow #navigation {
+    width: 16;
+    padding: 0;
 }
 
 #navigation Button {
@@ -62,6 +70,12 @@ Footer {
 }
 
 /* Main Content Area */
+#content-container {
+    padding: 0;
+    height: 1fr;
+    overflow-y: auto;
+}
+
 #content {
     padding: 2 4;
     height: 100%;
@@ -321,8 +335,11 @@ LoadingIndicator {
     border: tall $primary;
     background: $surface-darken-1;
     padding: 2;
-    width: 20;
-    height: 8;
+    width: 1fr;
+    min-width: 16;
+    max-width: 28;
+    height: auto;
+    min-height: 7;
     margin: 0 1;
 }
 
@@ -421,4 +438,21 @@ LoadingIndicator {
 
 .margin-bottom-2 {
     margin-bottom: 2;
+}
+
+/* Responsive: narrow terminals (<80 cols) */
+.narrow .screen-title {
+    margin-bottom: 1;
+}
+
+.narrow .form-group {
+    margin-bottom: 0;
+}
+
+.narrow .button-group {
+    margin-top: 1;
+}
+
+.narrow .quick-actions {
+    height: auto;
 }
