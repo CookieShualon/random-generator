@@ -5,6 +5,7 @@ from textual.containers import Container, Horizontal
 from textual.widgets import Header, Footer
 from textual.binding import Binding
 from textual.css.query import NoMatches
+from textual.events import Resize
 
 # Import screens and widgets
 from textual_tui.widgets.navigation import Navigation
@@ -59,7 +60,20 @@ class TextualTUI(App):
     
     def on_mount(self) -> None:
         """Called when app is mounted."""
+        self._update_responsive_classes()
         self.show_home_screen()
+
+    def on_resize(self, event: Resize) -> None:
+        """Update responsive classes when terminal is resized."""
+        self._update_responsive_classes()
+
+    def _update_responsive_classes(self) -> None:
+        """Add/remove CSS classes based on terminal size."""
+        width = self.size.width
+        if width < 80:
+            self.add_class("narrow")
+        else:
+            self.remove_class("narrow")
     
     def on_navigation_menu_selected(self, message: Navigation.MenuSelected) -> None:
         """Handle navigation menu selection."""

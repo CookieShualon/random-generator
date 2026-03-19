@@ -27,7 +27,7 @@ class ResultDisplay(Container):
         border: tall $primary;
         background: $surface-darken-1;
         padding: 1;
-        min-height: 10;
+        min-height: 5;
         max-height: 20;
         overflow-y: auto;
     }
