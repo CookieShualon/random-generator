@@ -14,9 +14,12 @@ class QuickActionCard(Container):
     QuickActionCard {
         border: tall $primary;
         background: $surface-darken-1;
-        padding: 2;
-        width: 22;
-        height: 11;
+        padding: 1 2;
+        width: 1fr;
+        min-width: 16;
+        max-width: 28;
+        height: auto;
+        min-height: 5;
         margin: 0 1;
     }
     
@@ -77,7 +80,8 @@ class HomeScreen(Container):
     DEFAULT_CSS = """
     HomeScreen {
         padding: 2 4;
-        height: 100%;
+        height: auto;
+        overflow-y: auto;
     }
     
     HomeScreen .welcome-title {
