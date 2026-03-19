@@ -154,14 +154,17 @@ class HistoryManager:
             dt = datetime.fromisoformat(timestamp)
             now = datetime.now()
             diff = now - dt
-            
-            if diff.seconds < 60:
+            total_seconds = diff.total_seconds()
+
+            if total_seconds < 0:
+                return dt.strftime("%Y-%m-%d")
+            elif total_seconds < 60:
                 return "Just now"
-            elif diff.seconds < 3600:
-                minutes = diff.seconds // 60
+            elif total_seconds < 3600:
+                minutes = int(total_seconds) // 60
                 return f"{minutes} min ago"
-            elif diff.seconds < 86400:
-                hours = diff.seconds // 3600
+            elif total_seconds < 86400:
+                hours = int(total_seconds) // 3600
                 return f"{hours} hour{'s' if hours > 1 else ''} ago"
             elif diff.days == 1:
                 return "Yesterday"
@@ -208,7 +211,7 @@ class HistoryManager:
             return f"{template}, count={params.get('count', 1)}"
         
         elif gen_type == "list":
-            return f"{len(params.get('items', []))} items, count={params.get('count', 1)}, unique={params.get('unique', False)}"
+            return f"{params.get('items_count', 0)} items, count={params.get('count', 1)}, unique={params.get('unique', False)}"
         
         return str(params)
     
